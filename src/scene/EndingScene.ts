@@ -21,7 +21,6 @@ export class EndingScene extends Phaser.Scene {
     const { width, height } = this.game.canvas;
     let kanji:string = this.kanji!
     let ids:string = this.ids!
-    const ids_temp2 = "⿰⿱⿱⿱⿱丶一丷一月★" 
     
     this.add.text(width/2,height/2-170,kanji,{fontSize:100,},).setOrigin(0.5);
 

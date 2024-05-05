@@ -31,7 +31,7 @@ export class TitleScene extends Phaser.Scene {
 
     // buttonをクリックしたらMainSceneに遷移
     button_play.on('pointerdown', () => {
-      this.scene.start('main', { timelineID: 'start' })});
+      this.scene.start('ending', { kanji: '龍', ids: '⿰⿱⿱⿱⿱丶一丷一月&CDP-89B0'})});
 
     /*
     const rule = this.add.text(width/2,height/2+120,"How To Play",{fontSize:35}).setOrigin(0.5)

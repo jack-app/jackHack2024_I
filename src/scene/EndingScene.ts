@@ -1,3 +1,11 @@
+import { KanjiRestore } from '../class/KanjiRestore';
+import { MainSceneManager} from '../class/MainSceneManager';
+enum OperationState {
+  INIT,
+  TOP,
+  BOTTOM
+}
+
 export class EndingScene extends Phaser.Scene {
   private kanji?: string;
   private ids?: string;
@@ -69,7 +77,11 @@ export class EndingScene extends Phaser.Scene {
     })
     // 結果を共有するページに遷移
     button_share.on('pointerdown',() => {
-
+      // デバッグ用にKanjiRestoreのrestoreメソッドを呼び出す
+      const kanjiRestore = new KanjiRestore();
+      const mainSceneManager = new MainSceneManager();
+      const kanjiWithIds = kanjiRestore.restore(["月"], OperationState.TOP);
+      this.scene.start('ending',{kanji:kanjiWithIds.kanji,ids:kanjiWithIds.ids.join("")});
     })
   }
 }

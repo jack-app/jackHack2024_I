@@ -1,8 +1,7 @@
 export class EndingScene extends Phaser.Scene {
   private kanji?: string;
   private ids?: string;
-
-  constructor() {
+    constructor() {
     super('ending');
   }
 
@@ -26,7 +25,10 @@ export class EndingScene extends Phaser.Scene {
 
     ids = ids.replace(/&\w{3}-\w{4}/g,"★");
     this.add.text(width/2,height/2-70,ids,{fontSize:45,fontFamily:"meiryo UI"},).setOrigin(0.5)
+    let score: number = ids.length;
 
+    this.add.text(width/3,height/2+20,"Score:",{fontSize:35,fontFamily:"meiryo UI"}).setOrigin(0.5)
+    this.add.text(width/2,height/2+20,String(score),{fontSize:35,fontFamily:"meiryo UI"}).setOrigin(0.5)
     const button= this.add.text(width/2, height/2+120, 'RETRY',{fontSize:35,fontFamily:"meiryo UI"}).setOrigin(0.5);
     button.setInteractive({
       useHandCursor: true

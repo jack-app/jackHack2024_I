@@ -3,11 +3,11 @@ import { TimelinePlayer } from '../class/TimelinePlayer';
 import { Timeline } from '../type/Timeline';
 import { timelineData } from '../data/timeline';
 
-export class MainScene extends Phaser.Scene {
+export class SampleMainScene extends Phaser.Scene {
   private timeline?: Timeline;
 
   constructor() {
-    super('main');
+    super('sample-main');
   }
 
   init(data: any) {

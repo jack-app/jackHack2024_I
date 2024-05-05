@@ -19,7 +19,7 @@ export class TitleScene extends Phaser.Scene {
 
     // ZoneをクリックしたらMainSceneに遷移
     zone.on('pointerdown', () => {
-      this.scene.start('main', { timelineID: 'start' });
+      this.scene.start('main');
     });
   }
 }

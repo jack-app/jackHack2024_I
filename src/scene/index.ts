@@ -1,6 +1,7 @@
 import { LoadingScene } from './LoadingScene';
 import { TitleScene } from './TitleScene';
-import { MainScene } from './MainScene';
+import { SampleMainScene } from './MainScene';
+import { MainScene } from './Scene2';
 import { EndingScene } from './EndingScene';
 
-export const Scenes = [LoadingScene, TitleScene, MainScene, EndingScene];
+export const Scenes = [LoadingScene, TitleScene, SampleMainScene, EndingScene, MainScene];

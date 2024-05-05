@@ -1,21 +1,47 @@
 export class EndingScene extends Phaser.Scene {
+  private kanji?: string;
+  private ids?: string;
+
   constructor() {
     super('ending');
   }
 
+  init(data: any){
+    const kanji = data.kanji;
+    const ids = data.ids;
+    // data = {
+    // kanji: "龍",
+    // ids:"⿰⿱⿱⿱⿱丶一丷一月&CDP-89B0"
+    //  }
+    this.kanji = kanji;
+    this.ids = ids;
+  }
+
   create() {
     const { width, height } = this.game.canvas;
+    let kanji:string = this.kanji!
+    let ids:string = this.ids!
+    const ids_temp2 = "⿰⿱⿱⿱⿱丶一丷一月★" 
+    
+    this.add.text(width/2,height/2-170,kanji,{fontSize:100,},).setOrigin(0.5);
 
-    this.add.image(width/2, height/2, 'logo');
-    this.add.text(width/2, height/2+60, 'おわり').setOrigin(0.5);
-    this.add.text(width/2, height/2+80, '背景:[Cyberpunk Street Environment] by Luis Zuno @ansimuz').setOrigin(0.5);
+    ids = ids.replace(/&\w{3}-\w{4}/g,"★");
+    this.add.text(width/2,height/2-70,ids,{fontSize:45},).setOrigin(0.5)
 
-    const zone = this.add.zone(width/2, height/2, width, height);
-    zone.setInteractive({
+    const button= this.add.text(width/2, height/2+120, 'RETRY',{fontSize:35}).setOrigin(0.5);
+    button.setInteractive({
       useHandCursor: true
     });
-    zone.on('pointerdown', () => {
+    button.on('pointerdown', () => {
       this.scene.start('title');  // TitleSceneに遷移
     });
+    const share= this.add.text(width/2, height/2+200, 'Share Result',{fontSize:30}).setOrigin(0.5);
+    share.setInteractive({
+      useHandCursor: true
+    })
+    // 結果を共有するページに遷移
+    share.on('pointerdown',() => {
+
+    })
   }
 }

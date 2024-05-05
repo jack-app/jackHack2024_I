@@ -22,12 +22,12 @@ export class EndingScene extends Phaser.Scene {
     let kanji:string = this.kanji!
     let ids:string = this.ids!
     
-    this.add.text(width/2,height/2-170,kanji,{fontSize:100,},).setOrigin(0.5);
+    this.add.text(width/2,height/2-170,kanji,{fontSize:100,fontFamily:"meiryo UI"},).setOrigin(0.5);
 
     ids = ids.replace(/&\w{3}-\w{4}/g,"★");
-    this.add.text(width/2,height/2-70,ids,{fontSize:45},).setOrigin(0.5)
+    this.add.text(width/2,height/2-70,ids,{fontSize:45,fontFamily:"meiryo UI"},).setOrigin(0.5)
 
-    const button= this.add.text(width/2, height/2+120, 'RETRY',{fontSize:35}).setOrigin(0.5);
+    const button= this.add.text(width/2, height/2+120, 'RETRY',{fontSize:35,fontFamily:"meiryo UI"}).setOrigin(0.5);
     button.setInteractive({
       useHandCursor: true
     });

@@ -5,19 +5,19 @@ enum OperationState {
 }
 
 export class MainSceneManager {
-  kanjiElements: string;
+  kanjiElements: string[];
   originalElements: string;
   originalKanji: string;
   operationState: OperationState;
 
   constructor() {
-    this.kanjiElements = "⿱田";
-    this.originalElements = "⿱田力";
-    this.originalKanji = "力";
+    this.kanjiElements = ["⿱","田",];
+    this.originalElements = "⿱田⿻丿𠃌";
+    this.originalKanji = "男";
     this.operationState = OperationState.INIT;
   }
 
-  private setKanjiElements = (newElements: string): void => {
+  private setKanjiElements = (newElements: string[]): void => {
     this.kanjiElements = newElements;
   };
 

@@ -50,7 +50,7 @@ export const timelineData: Timelines = {
     {type: 'dialog', text: 'わかりました。それでは私はこれで ▼', actorName: 'ACT-42'},
     {type: 'clearForeground'},
     {type: 'dialog', text: '・・・・・・ ▼'},
-    {type: 'dialog', text: 'この後俺は謎の組織に捕まり色々されてしまうのだった・・・ ▼'},
+    {type: 'dialog', text: 'uoooooooooooooooooooooこの後俺は謎の組織に捕まり色々されてしまうのだった・・・ ▼'},
     {type: 'sceneTransition', key: 'ending'}
   ]
 }

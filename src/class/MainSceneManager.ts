@@ -34,6 +34,15 @@ export class MainSceneManager {
     return this.kanjiElements;
   };
 
+  public getOriginalElements = (): string[] => {
+    // FIXME: Unicodeで表示できない文字を星に置換
+    return this.originalElements;
+  };
+
+  public getOperationState = (): OperationState => {
+    return this.operationState;
+  };
+
   private setKanjiElements = (newElements: string[]): void => {
     this.kanjiElements = newElements;
   };
@@ -50,7 +59,8 @@ export class MainSceneManager {
 
   public restore(): void {
     // 辞書から新たな漢字構成要素と漢字を取得してセット
-    // kanjiElementsを新たな漢字構成要素にセット
+    this.setKanjiElements(this.originalElements); // for development
+    this.originalKanji = "女"; // for development
     // operationStateをINITに戻す
     this.operationState = OperationState.INIT;
   }
@@ -65,10 +75,12 @@ export class MainSceneManager {
     this.operationState = OperationState.BOTTOM;
   }
 
-  public complete(): void {
-    // 復元直後、即ち操作ステートがINIT以外なら早期リターン
-    if (this.operationState !== OperationState.INIT) return;
-
-    // スコアを計算して諸々の情報と共にエンディングシーンに渡す
+  public complete(): { kanji: string; kanjiElements: string[]; score: number } {
+    // スコアを計算して諸々の情報と共に返す
+    return {
+      kanji: this.getKanji(),
+      kanjiElements: this.getKanjiElements(),
+      score: this.getKanjiElements().length * 100,
+    };
   }
 }

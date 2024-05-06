@@ -25,8 +25,36 @@ export class MainScene extends Phaser.Scene {
 
   create() {
     const { width, height } = this.game.canvas;
+    const opState = this.manager.getOperationState();
+    console.log("opState: ", opState);
 
+    // =============================
+    // 中央の文字列を作成
+    // =============================
+    const kanji = this.manager.getKanji();
+    this.add
+      .text(width / 2, height / 2 + 50, kanji, { fontSize: "200px" })
+      .setOrigin(0.5)
+      .setPadding(10);
+
+    // 元の漢字の構成要素に対する現在の漢字構成要素の比率
+    const rate =
+      this.manager.getKanjiElements().length /
+      this.manager.getOriginalElements().length;
+    console.log("rate: ", rate);
+    const graphics = this.add.graphics().fillStyle(0x000000, 1);
+    // 下を磨く場合の幕
+    if (opState == OperationState.BOTTOM) {
+      graphics.fillRect(width / 2 - 100, 420 - 2.0 * rate, 200, 200);
+    }
+    //　上を磨く場合の幕
+    if (opState == OperationState.TOP) {
+      graphics.fillRect(width / 2 - 100, 40 + 2.0 * rate, 200, 200);
+    }
+
+    // =============================
     // 漢字構成要素の表示
+    // =============================
     const elements = this.manager.getKanjiElements();
     this.add
       .text(width / 2, 50, "漢字構成要素:" + elements.join(""), {
@@ -37,31 +65,11 @@ export class MainScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setPadding(4);
 
-    // 中央の文字列を作成
-    const kanji = this.manager.getKanji();
-    this.add
-      .text(width / 2, height / 2 + 50, kanji, { fontSize: "200px" })
-      .setOrigin(0.5)
-      .setPadding(10);
-
-    let rate = 0;
-    let target = "TOP";
-    // 下の幕
-    if (target == "BOTTUM") {
-      let graphics = this.add.graphics();
-      graphics
-        .fillStyle(0x800000, 1)
-        .fillRect(width / 2 - 100, 420 - 2.0 * rate, 200, 200);
-    } else if (target == "TOP") {
-      // 上の幕
-      let graphics2 = this.add.graphics();
-      graphics2
-        .fillStyle(0x800000, 1)
-        .fillRect(width / 2 - 100, 40 + 2.0 * rate, 200, 200);
-    }
-
+    // =============================
+    // ボタンの定義
+    // =============================
     // "上から磨く"ボタン作成
-    this.add
+    const buttonTop = this.add
       .text(width / 2 + 300, height / 2 + 130, "上から磨く", {
         fontSize: "24px",
         color: "#ffffff",
@@ -69,34 +77,13 @@ export class MainScene extends Phaser.Scene {
       })
       .setOrigin(0.5)
       .setPadding(4)
-      .setInteractive({
-        useHandCursor: true,
-      })
       .on("pointerdown", () => {
-        if (buttonEnabled["sharpenTop"] == true) {
-          if (ids.length > 1) {
-            let result = ids.slice(1).join("");
-            console.log(result);
-            this.add
-              .text(width / 2, 50, "漢字構成要素:" + result, {
-                fontSize: "24px",
-                color: "#ffffff",
-                backgroundColor: "#000000",
-              })
-              .setOrigin(0.5)
-              .setPadding(4);
-            buttonEnabled["sharpenButtom"] = false;
-          } else if (ids.length < 1) {
-            return;
-          }
-        } else if (buttonEnabled["sharpenTop"] == false) {
-          return;
-        }
-        //this.scene.restart()
+        this.manager.sharpenTop();
+        this.scene.restart();
       });
 
     // "復元する"ボタン作成
-    this.add
+    const buttonRestore = this.add
       .text(width / 2 + 300, height / 2 + 180, "復元する", {
         fontSize: "24px",
         color: "#ffffff",
@@ -104,17 +91,13 @@ export class MainScene extends Phaser.Scene {
       })
       .setOrigin(0.5)
       .setPadding(4)
-      .setInteractive({
-        useHandCursor: true,
-      })
       .on("pointerdown", () => {
-        buttonEnabled["sharpenTop"] = true;
-        buttonEnabled["sharpenButtom"] = true;
+        this.manager.restore();
         this.scene.restart();
       });
 
     // "下から磨く"ボタン作成
-    this.add
+    const buttonBottom = this.add
       .text(width / 2 + 300, height / 2 + 230, "下から磨く", {
         fontSize: "24px",
         color: "#ffffff",
@@ -122,34 +105,13 @@ export class MainScene extends Phaser.Scene {
       })
       .setOrigin(0.5)
       .setPadding(4)
-      .setInteractive({
-        useHandCursor: true,
-      })
       .on("pointerdown", () => {
-        if (buttonEnabled["sharpenButtom"] == true) {
-          if (ids.length > 1) {
-            let result = ids.slice(0, -1).join("");
-            console.log(result);
-            this.add
-              .text(width / 2, 50, "漢字構成要素:" + result, {
-                fontSize: "24px",
-                color: "#ffffff",
-                backgroundColor: "#000000",
-              })
-              .setOrigin(0.5)
-              .setPadding(4);
-            buttonEnabled["sharpenTop"] = false;
-          } else if (ids.length < 1) {
-            return;
-          }
-        } else if (buttonEnabled["sharpenButtom"] == false) {
-          return;
-        }
-        //this.scene.restart()
+        this.manager.sharpenBottom();
+        this.scene.restart();
       });
 
     // "完了"ボタン作成
-    this.add
+    const buttonComplete = this.add
       .text(width / 2 + 300, height / 2 + 280, "完成", {
         fontSize: "24px",
         color: "#ffffff",
@@ -157,16 +119,43 @@ export class MainScene extends Phaser.Scene {
       })
       .setOrigin(0.5)
       .setPadding(4)
-      .setInteractive({
-        useHandCursor: true,
-      })
       .on("pointerdown", () => {
-        buttonEnabled["sharpenTop"] = true;
-        buttonEnabled["sharpenButtom"] = true;
+        const { kanji, kanjiElements, score } = this.manager.complete();
         this.scene.start("ending", {
-          kanji: this.manager.getKanji(),
-          ids: this.manager.getKanjiElements().join(""),
+          kanji: kanji,
+          ids: kanjiElements.join(""),
+          score: score,
         });
       });
+
+    // =============================
+    // ボタンの有効・無効化
+    // =============================
+    if (opState in [OperationState.INIT]) {
+      console.log(opState in [OperationState.INIT]);
+      for (const button of [buttonTop, buttonBottom, buttonComplete]) {
+        console.log("init button: ", button);
+        button.setInteractive({
+          useHandCursor: true,
+        });
+      }
+    }
+    if (opState in [OperationState.TOP]) {
+      console.log(opState in [OperationState.TOP]);
+      for (const button of [buttonTop, buttonRestore]) {
+        console.log("top button: ", button);
+        button.setInteractive({
+          useHandCursor: true,
+        });
+      }
+    }
+    if (opState in [OperationState.BOTTOM]) {
+      for (const button of [buttonRestore, buttonBottom]) {
+        console.log("bottom button: ", button);
+        button.setInteractive({
+          useHandCursor: true,
+        });
+      }
+    }
   }
 }

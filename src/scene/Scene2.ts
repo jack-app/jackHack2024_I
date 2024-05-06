@@ -11,26 +11,45 @@ export class MainScene extends Phaser.Scene {
   preload() {
     // ロゴ画像だけは最初から表示したいので予めロード
     // Phaser3のロゴをlabs.phaser.ioから取得しているので、もし公開する際はこの部分は消してください
+    this.load.image("background_main", "assets/background_main.png");
     this.load.image("buttonTop","assets/button_uekara.png")
     this.load.image("buttonRestore","assets/button_hukugen.png")
     this.load.image("buttonBottom","assets/button_shitakara.png")
     this.load.image("buttonComplete","assets/button_kansei.png")
+    this.load.image("frame_ending", "assets/frame_ending.png");
+    this.load.image("kanjiframe", "assets/kanjiframe.png")
   }
 
   create() {
     const { width, height } = this.game.canvas;
+    const background = this.add
+      .image(width / 2, height / 2, "background_main")
+      .setOrigin(0.5);
+    // 背景画像の大きさを合わせる
+    background.setDisplaySize(width, height);
+
+
     const opState = this.manager.getOperationState();
     console.log("opState: ", opState);
 
     // =============================
     // 中央の文字列を作成
     // =============================
+    const kanjiframe2 = this.add
+      .image(width / 2, height / 2+25, "frame_ending")
+      .setOrigin(0.5);
+    kanjiframe2.setDisplaySize(370, 370);
+    const kanjiframe = this.add
+      .image(width / 2, height / 2+25, "kanjiframe")
+      .setOrigin(0.5);
+    kanjiframe.setDisplaySize(400, 400);
+    
     const kanji = this.manager.getKanji();
     this.add
       .text(width / 2, height / 2 + 50, kanji, { fontSize: "200px" })
       .setOrigin(0.5)
       .setPadding(10);
-
+      
     // 元の漢字の構成要素に対する現在の漢字構成要素の比率
     const rate =
       this.manager.getKanjiElements().length /
@@ -113,7 +132,7 @@ export class MainScene extends Phaser.Scene {
       buttonTop.setInteractive({
         useHandCursor: true,
       });
-      buttonRestore.setAlpha(0.5);
+      buttonRestore.setAlpha(0.3);
 
       buttonBottom.setInteractive({
         useHandCursor: true,
@@ -129,18 +148,18 @@ export class MainScene extends Phaser.Scene {
       buttonRestore.setInteractive({
         useHandCursor: true,
       });
-      buttonBottom.setAlpha(0.5);
-      buttonComplete.setAlpha(0.5);
+      buttonBottom.setAlpha(0.3);
+      buttonComplete.setAlpha(0.3);
     }
     if (opState == OperationState.BOTTOM) {
-      buttonTop.setAlpha(0.5);
+      buttonTop.setAlpha(0.3);
       buttonRestore.setInteractive({
         useHandCursor: true,
       });
       buttonBottom.setInteractive({
         useHandCursor: true,
       });
-      buttonComplete.setAlpha(0.5);
+      buttonComplete.setAlpha(0.3);
     }
   }
 }

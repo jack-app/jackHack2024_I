@@ -80,37 +80,37 @@ export class MainScene extends Phaser.Scene {
     // =============================
     // "上から磨く"ボタン作成
     const buttonTop = this.add
-      .image(width / 2 + 300, height / 2 + 130, "buttonTop")
+      .image(width / 2 + 295, height / 2 + 90, "buttonTop")
       .setOrigin(0.5)
       .on("pointerdown", () => {
         this.manager.sharpenTop();
         this.scene.restart();
       });
-    buttonTop.setDisplaySize(200, 40);
+    buttonTop.setDisplaySize(200, 50);
 
     // "復元する"ボタン作成
     const buttonRestore = this.add
-      .image(width / 2 + 300, height / 2 + 180, "buttonRestore")
+      .image(width / 2 + 295, height / 2 + 145, "buttonRestore")
       .setOrigin(0.5)
       .on("pointerdown", () => {
         this.manager.restore();
         this.scene.restart();
       });
-    buttonRestore.setDisplaySize(200, 40);
+    buttonRestore.setDisplaySize(200, 50);
 
     // "下から磨く"ボタン作成
     const buttonBottom = this.add
-      .image(width / 2 + 300, height / 2 + 230, "buttonBottom")
+      .image(width / 2 + 295, height / 2 + 200, "buttonBottom")
       .setOrigin(0.5)
       .on("pointerdown", () => {
         this.manager.sharpenBottom();
         this.scene.restart();
       });
-    buttonBottom.setDisplaySize(200, 40);
+    buttonBottom.setDisplaySize(200, 50);
 
     // "完了"ボタン作成
     const buttonComplete = this.add
-      .image(width / 2 + 300, height / 2 + 280, "buttonComplete")
+      .image(width / 2 + 295, height / 2 + 255, "buttonComplete")
       .setOrigin(0.5)
       .on("pointerdown", () => {
         const { kanji, kanjiElements, score } = this.manager.complete();
@@ -121,7 +121,7 @@ export class MainScene extends Phaser.Scene {
           score: score,
         });
       });
-    buttonComplete.setDisplaySize(200, 40);
+    buttonComplete.setDisplaySize(200, 50);
 
     // =============================
     // ボタンの有効・無効化

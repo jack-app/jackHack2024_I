@@ -38,8 +38,10 @@ export class MainSceneManager {
   };
 
   public getKanjiElements = (): string[] => {
-    // FIXME: Unicodeで表示できない文字を星に置換
-    return this.kanjiElements;
+    const elements = this.kanjiElements.map((elm) => {
+      return elm[0] == "&" ? "☆" : elm;
+    });
+    return elements;
   };
 
   public getOriginalElements = (): string[] => {

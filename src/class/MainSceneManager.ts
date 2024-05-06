@@ -29,8 +29,11 @@ export class MainSceneManager {
     return this.instance;
   };
 
-  public destroyInstance = (): void => {
-    MainSceneManager.instance = undefined;
+  public initManager = (): void => {
+    this.kanjiElements = ["⿱", "田", "⿻", "丿", "𠃌"];
+    this.originalElements = ["⿱", "田", "⿻", "丿", "𠃌"];
+    this.originalKanji = "男";
+    this.operationState = OperationState.INIT;
   };
 
   public getKanji = (): string => {

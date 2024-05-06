@@ -12,12 +12,12 @@ export class MainScene extends Phaser.Scene {
     // ロゴ画像だけは最初から表示したいので予めロード
     // Phaser3のロゴをlabs.phaser.ioから取得しているので、もし公開する際はこの部分は消してください
     this.load.image("background_main", "assets/background_main.png");
-    this.load.image("buttonTop","assets/button_uekara.png")
-    this.load.image("buttonRestore","assets/button_hukugen.png")
-    this.load.image("buttonBottom","assets/button_shitakara.png")
-    this.load.image("buttonComplete","assets/button_kansei.png")
+    this.load.image("buttonTop", "assets/button_uekara.png");
+    this.load.image("buttonRestore", "assets/button_hukugen.png");
+    this.load.image("buttonBottom", "assets/button_shitakara.png");
+    this.load.image("buttonComplete", "assets/button_kansei.png");
     this.load.image("frame_ending", "assets/frame_ending.png");
-    this.load.image("kanjiframe", "assets/kanjiframe.png")
+    this.load.image("kanjiframe", "assets/kanjiframe.png");
   }
 
   create() {
@@ -28,25 +28,24 @@ export class MainScene extends Phaser.Scene {
     // 背景画像の大きさを合わせる
     background.setDisplaySize(width, height);
 
-
     const opState = this.manager.getOperationState();
 
     // =============================
     // 中央の文字列を作成
     // =============================
     const graphics = this.add.graphics().fillStyle(0x000000, 1);
-    graphics.fillRect(width / 2-(370/2), height / 2+25 -(370/2), 370, 370);
+    graphics.fillRect(width / 2 - 370 / 2, height / 2 + 25 - 370 / 2, 370, 370);
     const kanjiframe = this.add
-      .image(width / 2, height / 2+25, "kanjiframe")
+      .image(width / 2, height / 2 + 25, "kanjiframe")
       .setOrigin(0.5);
     kanjiframe.setDisplaySize(400, 400);
-    
+
     const kanji = this.manager.getKanji();
     this.add
       .text(width / 2, height / 2 + 50, kanji, { fontSize: "200px" })
       .setOrigin(0.5)
       .setPadding(10);
-      
+
     // 元の漢字の構成要素に対する現在の漢字構成要素の比率
     const rate =
       this.manager.getKanjiElements().length /
@@ -113,8 +112,8 @@ export class MainScene extends Phaser.Scene {
       .image(width / 2 + 300, height / 2 + 280, "buttonComplete")
       .setOrigin(0.5)
       .on("pointerdown", () => {
+        this.manager.initManager();
         const { kanji, kanjiElements, score } = this.manager.complete();
-        this.manager.destroyInstance();
         this.scene.start("ending", {
           kanji: kanji,
           ids: kanjiElements.join(""),

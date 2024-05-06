@@ -50,16 +50,13 @@ export class MainScene extends Phaser.Scene {
     const rate =
       this.manager.getKanjiElements().length /
       this.manager.getOriginalElements().length;
-    let pos = 0;
+    const graphic = this.add.graphics().fillStyle(0x000000, 1);
+    const h = 200 * (1 - rate);
     if (opState == OperationState.TOP) {
-      pos = 220 - 200 * rate;
+      graphic.fillRect(width / 2 - 100, 220, 200, h);
     } else if (opState == OperationState.BOTTOM) {
-      pos = 220 + 200 * rate;
+      graphic.fillRect(width / 2 - 100, 420 - h, 200, h);
     }
-    this.add
-      .graphics()
-      .fillStyle(0x000000, 1)
-      .fillRect(width / 2 - 100, pos, 200, 200);
 
     // =============================
     // 漢字構成要素の表示
@@ -112,8 +109,8 @@ export class MainScene extends Phaser.Scene {
       .image(width / 2 + 300, height / 2 + 280, "buttonComplete")
       .setOrigin(0.5)
       .on("pointerdown", () => {
-        this.manager.initManager();
         const { kanji, kanjiElements, score } = this.manager.complete();
+        this.manager.initManager(); // 結果を取得してから初期化
         this.scene.start("ending", {
           kanji: kanji,
           ids: kanjiElements.join(""),

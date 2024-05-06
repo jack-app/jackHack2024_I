@@ -1,14 +1,5 @@
 import { MainSceneManager, OperationState } from "../class/MainSceneManager";
 
-let buttonEnabled = {
-  sharpenTop: true,
-  restore: true,
-  sharpenButtom: true,
-  complete: true,
-};
-
-let ids = ["⿱", "田", "⿻", "丿", "𠃌"];
-
 export class MainScene extends Phaser.Scene {
   private manager: MainSceneManager;
 
@@ -131,31 +122,37 @@ export class MainScene extends Phaser.Scene {
     // =============================
     // ボタンの有効・無効化
     // =============================
-    if (opState in [OperationState.INIT]) {
-      console.log(opState in [OperationState.INIT]);
-      for (const button of [buttonTop, buttonBottom, buttonComplete]) {
-        console.log("init button: ", button);
-        button.setInteractive({
-          useHandCursor: true,
-        });
-      }
+    if (opState == OperationState.INIT) {
+      buttonTop.setInteractive({
+        useHandCursor: true,
+      });
+      buttonRestore.setFill("#888888");
+      buttonBottom.setInteractive({
+        useHandCursor: true,
+      });
+      buttonComplete.setInteractive({
+        useHandCursor: true,
+      });
     }
-    if (opState in [OperationState.TOP]) {
-      console.log(opState in [OperationState.TOP]);
-      for (const button of [buttonTop, buttonRestore]) {
-        console.log("top button: ", button);
-        button.setInteractive({
-          useHandCursor: true,
-        });
-      }
+    if (opState == OperationState.TOP) {
+      buttonTop.setInteractive({
+        useHandCursor: true,
+      });
+      buttonRestore.setInteractive({
+        useHandCursor: true,
+      });
+      buttonBottom.setFill("#888888");
+      buttonComplete.setFill("#888888");
     }
-    if (opState in [OperationState.BOTTOM]) {
-      for (const button of [buttonRestore, buttonBottom]) {
-        console.log("bottom button: ", button);
-        button.setInteractive({
-          useHandCursor: true,
-        });
-      }
+    if (opState == OperationState.BOTTOM) {
+      buttonTop.setFill("#888888");
+      buttonRestore.setInteractive({
+        useHandCursor: true,
+      });
+      buttonBottom.setInteractive({
+        useHandCursor: true,
+      });
+      buttonComplete.setFill("#888888");
     }
   }
 }

@@ -1,5 +1,5 @@
-import * as data from "../data/joyo-tree.json";
-import * as data_reverse from "../data/joyo-tree-reverse.json";
+import * as data from "../data/UCSkanji-tree.json";
+import * as data_reverse from "../data/UCSkanji-tree-reverse.json";
 
 enum OperationState {
   INIT,

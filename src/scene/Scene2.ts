@@ -42,7 +42,7 @@ export class MainScene extends Phaser.Scene {
 
     const kanji = this.manager.getKanji();
     this.add
-      .text(width / 2, height / 2 + 50, kanji, { fontSize: "200px" })
+      .text(width / 2, height / 2 + 20, kanji, {fontFamily:"NotoSansCJKjp", fontSize: "200px" })
       .setOrigin(0.5)
       .setPadding(10);
 

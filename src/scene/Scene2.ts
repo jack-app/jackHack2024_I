@@ -1,14 +1,5 @@
 import { MainSceneManager, OperationState } from "../class/MainSceneManager";
 
-let buttonEnabled = {
-  sharpenTop: true,
-  restore: true,
-  sharpenButtom: true,
-  complete: true,
-};
-
-let ids = ["⿱", "田", "⿻", "丿", "𠃌"];
-
 export class MainScene extends Phaser.Scene {
   private manager: MainSceneManager;
 

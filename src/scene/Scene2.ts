@@ -35,10 +35,8 @@ export class MainScene extends Phaser.Scene {
     // =============================
     // 中央の文字列を作成
     // =============================
-    const kanjiframe2 = this.add
-      .image(width / 2, height / 2+25, "frame_ending")
-      .setOrigin(0.5);
-    kanjiframe2.setDisplaySize(370, 370);
+    const graphics = this.add.graphics().fillStyle(0x000000, 1);
+    graphics.fillRect(width / 2-(370/2), height / 2+25 -(370/2), 370, 370);
     const kanjiframe = this.add
       .image(width / 2, height / 2+25, "kanjiframe")
       .setOrigin(0.5);
@@ -55,7 +53,6 @@ export class MainScene extends Phaser.Scene {
       this.manager.getKanjiElements().length /
       this.manager.getOriginalElements().length;
     console.log("rate: ", rate);
-    const graphics = this.add.graphics().fillStyle(0x000000, 1);
     // 下を磨く場合の幕
     if (opState == OperationState.BOTTOM) {
       graphics.fillRect(width / 2 - 100, 420 - 2.0 * rate, 200, 200);

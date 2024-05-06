@@ -7,7 +7,7 @@ export enum OperationState {
 }
 
 export class MainSceneManager {
-  private static instance: MainSceneManager;
+  private static instance?: MainSceneManager;
   private kanjiElements: string[];
   private originalElements: string[];
   private originalKanji: string;
@@ -15,8 +15,8 @@ export class MainSceneManager {
   private kanjiRestore: KanjiRestore;
 
   constructor() {
-    this.kanjiElements = ["⿱", "田"];
-    this.originalElements = ["⿱", "田", "力"];
+    this.kanjiElements = ["⿱", "田", "⿻", "丿", "𠃌"];
+    this.originalElements = ["⿱", "田", "⿻", "丿", "𠃌"];
     this.originalKanji = "男";
     this.operationState = OperationState.INIT;
     this.kanjiRestore = new KanjiRestore();
@@ -27,6 +27,10 @@ export class MainSceneManager {
       this.instance = new MainSceneManager();
     }
     return this.instance;
+  };
+
+  public destroyInstance = (): void => {
+    MainSceneManager.instance = undefined;
   };
 
   public getKanji = (): string => {
@@ -53,7 +57,6 @@ export class MainSceneManager {
 
   public sharpenTop(): void {
     // 文字数のバリデーション
-    // FIXME: 正しい要件を満たすように要修正
     if (this.kanjiElements.length <= 1) return;
     // "上から磨く"処理
     this.setKanjiElements(this.kanjiElements.slice(1));
@@ -63,7 +66,10 @@ export class MainSceneManager {
 
   public restore(): void {
     // 辞書から新たな漢字構成要素と漢字を取得してセット
-    const { kanji, ids } = this.kanjiRestore.restore(this.kanjiElements, this.operationState);
+    const { kanji, ids } = this.kanjiRestore.restore(
+      this.kanjiElements,
+      this.operationState
+    );
     this.setKanjiElements(ids); // for development
     this.originalKanji = kanji; // for development
     // operationStateをINITに戻す
@@ -72,7 +78,6 @@ export class MainSceneManager {
 
   public sharpenBottom(): void {
     // 文字数のバリデーション
-    // FIXME: 正しい要件を満たすように要修正
     if (this.kanjiElements.length <= 1) return;
     // 下から磨く処理
     this.setKanjiElements(this.kanjiElements.slice(0, -1));

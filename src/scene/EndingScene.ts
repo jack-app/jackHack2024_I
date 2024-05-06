@@ -1,6 +1,7 @@
 export class EndingScene extends Phaser.Scene {
   private kanji?: string;
   private ids?: string;
+  private score?: number;
 
   preload() {
     // 画像をロードする
@@ -15,14 +16,13 @@ export class EndingScene extends Phaser.Scene {
   }
 
   init(data: any) {
-    const kanji = data.kanji;
-    const ids = data.ids;
     // data = {
     // kanji: "龍",
     // ids:"⿰⿱⿱⿱⿱丶一丷一月&CDP-89B0"
     //  }
-    this.kanji = kanji;
-    this.ids = ids;
+    this.kanji = data.kanji;
+    this.ids = data.ids;
+    this.score = data.score;
   }
 
   create() {
@@ -64,7 +64,6 @@ export class EndingScene extends Phaser.Scene {
         fontFamily: "meiryo UI",
       })
       .setOrigin(0.5);
-    let score: number = ids.length;
 
     this.add
       .text(width / 3, height / 2, "Score:", {
@@ -73,7 +72,7 @@ export class EndingScene extends Phaser.Scene {
       })
       .setOrigin(0.5);
     this.add
-      .text(width / 2, height / 2, String(score), {
+      .text(width / 2, height / 2, String(this.score), {
         fontSize: 35,
         fontFamily: "meiryo UI",
       })
@@ -101,6 +100,8 @@ export class EndingScene extends Phaser.Scene {
       useHandCursor: true,
     });
     // 結果を共有するページに遷移
-    button_share.on("pointerdown", () => {});
+    button_share.on("pointerdown", () => {
+      window.alert("甘いって。自分の手でシェアしないと。");
+    });
   }
 }

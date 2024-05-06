@@ -1,3 +1,5 @@
+import { KanjiRestore } from "./KanjiRestore";
+
 export enum OperationState {
   INIT,
   TOP,
@@ -10,12 +12,14 @@ export class MainSceneManager {
   private originalElements: string[];
   private originalKanji: string;
   private operationState: OperationState;
+  private kanjiRestore: KanjiRestore;
 
   constructor() {
     this.kanjiElements = ["⿱", "田"];
     this.originalElements = ["⿱", "田", "力"];
     this.originalKanji = "男";
     this.operationState = OperationState.INIT;
+    this.kanjiRestore = new KanjiRestore();
   }
 
   public static getInstance = (): MainSceneManager => {
@@ -59,8 +63,9 @@ export class MainSceneManager {
 
   public restore(): void {
     // 辞書から新たな漢字構成要素と漢字を取得してセット
-    this.setKanjiElements(this.originalElements); // for development
-    this.originalKanji = "女"; // for development
+    const { kanji, ids } = this.kanjiRestore.restore(this.kanjiElements, this.operationState);
+    this.setKanjiElements(ids); // for development
+    this.originalKanji = kanji; // for development
     // operationStateをINITに戻す
     this.operationState = OperationState.INIT;
   }

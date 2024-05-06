@@ -1,21 +1,38 @@
-enum OperationState {
+export enum OperationState {
   INIT,
   TOP,
   BOTTOM,
 }
 
 export class MainSceneManager {
-  kanjiElements: string[];
-  originalElements: string[];
-  originalKanji: string;
-  operationState: OperationState;
+  private static instance: MainSceneManager;
+  private kanjiElements: string[];
+  private originalElements: string[];
+  private originalKanji: string;
+  private operationState: OperationState;
 
   constructor() {
     this.kanjiElements = ["⿱", "田"];
     this.originalElements = ["⿱", "田", "力"];
-    this.originalKanji = "力";
+    this.originalKanji = "男";
     this.operationState = OperationState.INIT;
   }
+
+  public static getInstance = (): MainSceneManager => {
+    if (!this.instance) {
+      this.instance = new MainSceneManager();
+    }
+    return this.instance;
+  };
+
+  public getKanji = (): string => {
+    return this.originalKanji;
+  };
+
+  public getKanjiElements = (): string[] => {
+    // FIXME: Unicodeで表示できない文字を星に置換
+    return this.kanjiElements;
+  };
 
   private setKanjiElements = (newElements: string[]): void => {
     this.kanjiElements = newElements;

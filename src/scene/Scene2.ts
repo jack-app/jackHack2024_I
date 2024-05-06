@@ -30,7 +30,6 @@ export class MainScene extends Phaser.Scene {
 
 
     const opState = this.manager.getOperationState();
-    console.log("opState: ", opState);
 
     // =============================
     // 中央の文字列を作成
@@ -52,15 +51,16 @@ export class MainScene extends Phaser.Scene {
     const rate =
       this.manager.getKanjiElements().length /
       this.manager.getOriginalElements().length;
-    console.log("rate: ", rate);
-    // 下を磨く場合の幕
-    if (opState == OperationState.BOTTOM) {
-      graphics.fillRect(width / 2 - 100, 420 - 2.0 * rate, 200, 200);
-    }
-    //　上を磨く場合の幕
+    let pos = 0;
     if (opState == OperationState.TOP) {
-      graphics.fillRect(width / 2 - 100, 40 + 2.0 * rate, 200, 200);
+      pos = 220 - 200 * rate;
+    } else if (opState == OperationState.BOTTOM) {
+      pos = 220 + 200 * rate;
     }
+    this.add
+      .graphics()
+      .fillStyle(0x000000, 1)
+      .fillRect(width / 2 - 100, pos, 200, 200);
 
     // =============================
     // 漢字構成要素の表示
@@ -114,6 +114,7 @@ export class MainScene extends Phaser.Scene {
       .setOrigin(0.5)
       .on("pointerdown", () => {
         const { kanji, kanjiElements, score } = this.manager.complete();
+        this.manager.destroyInstance();
         this.scene.start("ending", {
           kanji: kanji,
           ids: kanjiElements.join(""),

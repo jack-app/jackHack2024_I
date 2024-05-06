@@ -60,6 +60,10 @@ export class MainSceneManager {
     this.kanjiElements = newElements;
   };
 
+  private setOriginalElements = (newElements: string[]): void => {
+    this.originalElements = newElements;
+  };
+
   public sharpenTop(): void {
     // 文字数のバリデーション
     if (this.kanjiElements.length <= 1) return;
@@ -75,8 +79,9 @@ export class MainSceneManager {
       this.kanjiElements,
       this.operationState
     );
-    this.setKanjiElements(ids); // for development
-    this.originalKanji = kanji; // for development
+    this.setKanjiElements(ids);
+    this.setOriginalElements(ids);
+    this.originalKanji = kanji;
     // operationStateをINITに戻す
     this.operationState = OperationState.INIT;
   }

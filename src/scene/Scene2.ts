@@ -1,162 +1,161 @@
+import { MainSceneManager, OperationState } from "../class/MainSceneManager";
+
 let buttonEnabled = {
-  'sharpenTop':true,
-  'restore':true,
-  'sharpenButtom':true,
-  'complete':true,
-  }
+  sharpenTop: true,
+  restore: true,
+  sharpenButtom: true,
+  complete: true,
+};
 
-let ids = ['⿱', '田', '⿻', '丿', '𠃌']
-
-// class MainSceneManager {
-  // ids: string[]
-
-  // constructor() {
-    // this.ids = ['⿱', '田', '⿻', '丿', '𠃌']
-  // }
-
-  // setIds(newIds: string[]) {
-    // this.ids = newIds
-  // }
-// }
+let ids = ["⿱", "田", "⿻", "丿", "𠃌"];
 
 export class MainScene extends Phaser.Scene {
-    constructor() {
-      super('main');
-    }
-    
-    preload() {
-      // ロゴ画像だけは最初から表示したいので予めロード
-      // Phaser3のロゴをlabs.phaser.ioから取得しているので、もし公開する際はこの部分は消してください
-      this.load.image('logo', 'assets/phaser3-logo.png');
-    }
-    create() {
-      const { width, height } = this.game.canvas;
+  private manager: MainSceneManager;
+
+  constructor() {
+    super("main");
+    this.manager = MainSceneManager.getInstance();
+  }
+
+  preload() {
+    // ロゴ画像だけは最初から表示したいので予めロード
+    // Phaser3のロゴをlabs.phaser.ioから取得しているので、もし公開する際はこの部分は消してください
+    this.load.image("logo", "assets/phaser3-logo.png");
+  }
+
+  create() {
+    const { width, height } = this.game.canvas;
+    const opState = this.manager.getOperationState();
+    console.log("opState: ", opState);
+
+    // =============================
     // 中央の文字列を作成
-      this.add.text(width/2, height/2+50, '男', {fontSize: '200px'}).setOrigin(0.5).setPadding(10);
-   
-    let rate = 0;
-    let target = "TOP";
-     // 下の幕
-    if(target == 'BOTTUM'){
-    let graphics = this.add.graphics()
-        graphics.fillStyle(0x800000, 1).fillRect(width/2-100, 420-2.0*rate, 200, 200)
-    }else if (target == 'TOP'){// 上の幕  
-    let graphics2 = this.add.graphics()
-        graphics2.fillStyle(0x800000, 1).fillRect(width/2-100, 40+2.0*rate, 200, 200)    
+    // =============================
+    const kanji = this.manager.getKanji();
+    this.add
+      .text(width / 2, height / 2 + 50, kanji, { fontSize: "200px" })
+      .setOrigin(0.5)
+      .setPadding(10);
+
+    // 元の漢字の構成要素に対する現在の漢字構成要素の比率
+    const rate =
+      this.manager.getKanjiElements().length /
+      this.manager.getOriginalElements().length;
+    console.log("rate: ", rate);
+    const graphics = this.add.graphics().fillStyle(0x000000, 1);
+    // 下を磨く場合の幕
+    if (opState == OperationState.BOTTOM) {
+      graphics.fillRect(width / 2 - 100, 420 - 2.0 * rate, 200, 200);
     }
-        // ボタンを作成
-      const button = this.add.text(width/2+300, height/2+130, '上から磨く', {
-       fontSize: '24px',
-       color: '#ffffff',
-       backgroundColor: '#000000',
-       }).setOrigin(0.5).setPadding(4);
+    //　上を磨く場合の幕
+    if (opState == OperationState.TOP) {
+      graphics.fillRect(width / 2 - 100, 40 + 2.0 * rate, 200, 200);
+    }
 
-      // Zoneをクリックできるように設定
-      button.setInteractive({
-        useHandCursor: true  
-        // マウスオーバーでカーソルが指マークになる
-    });
-    // ボタン2を作成
-      const button2 = this.add.text(width/2+300, height/2+180, '復元する', {
-        fontSize: '24px',
-        color: '#ffffff',
-        backgroundColor: '#000000',
-        }).setOrigin(0.5).setPadding(4);
-      
-       // Zoneをクリックできるように設定
-       button2.setInteractive({
-         useHandCursor: true  
-         // マウスオーバーでカーソルが指マークになる
-     });
-     //ボタン３を作成
-     const button3 = this.add.text(width/2+300, height/2+230, '下から磨く', {
-        fontSize: '24px',
-        color: '#ffffff',
-        backgroundColor: '#000000',
-        }).setOrigin(0.5).setPadding(4);
-      
-       // Zoneをクリックできるように設定
-       button3.setInteractive({
-         useHandCursor: true  
-         // マウスオーバーでカーソルが指マークになる
-     });
-     
-     //ボタン4を作成
-     const button4 = this.add.text(width/2+300, height/2+280, '完成', {
-        fontSize: '24px',
-        color: '#ffffff',
-        backgroundColor: '#000000',
-        }).setOrigin(0.5).setPadding(4);
-      
-       // Zoneをクリックできるように設定
-       button4.setInteractive({
-         useHandCursor: true  
-         // マウスオーバーでカーソルが指マークになる
-     });
-     //文字列を定義
-    //  let ids = ['⿱', '田', '⿻', '丿', '𠃌']
-
-     const kanji = this.add.text(width/2, 50, '漢字構成要素:'+ids.join(''), {
-        fontSize: '24px',
-        color: '#ffffff',
-        backgroundColor: '#000000',
-        }).setOrigin(0.5).setPadding(4);
-       //上削るをクリックしたらidsの一番前の文字を消去
-       
-       button.on('pointerdown', () => { 
-        if(buttonEnabled['sharpenTop'] == true) 
-           {
-          if(ids.length>1)
-          {
-          let result = ids.slice(1).join('');
-          console.log(result)
-          this.add.text(width/2, 50, '漢字構成要素:'+result, {
-            fontSize: '24px',
-            color: '#ffffff',
-            backgroundColor: '#000000',
-            }).setOrigin(0.5).setPadding(4); 
-            buttonEnabled['sharpenButtom'] = false
-          }else if(ids.length<1)
-          {
-           return
-          }}else if(buttonEnabled['sharpenTop'] == false)
-            { 
-             return
-            }
-          //this.scene.restart()
-       })
-      //復元ボタンをクリックしたら    
-       button2.on('pointerdown', () => {
-        buttonEnabled['sharpenTop'] = true
-        buttonEnabled['sharpenButtom'] = true
-        this.scene.restart()
+    // =============================
+    // 漢字構成要素の表示
+    // =============================
+    const elements = this.manager.getKanjiElements();
+    this.add
+      .text(width / 2, 50, "漢字構成要素:" + elements.join(""), {
+        fontSize: "24px",
+        color: "#ffffff",
+        backgroundColor: "#000000",
       })
-      //下削るをクリックしたらidsの一番後ろの文字を消去
-       button3.on('pointerdown', () => { 
-        if(buttonEnabled['sharpenButtom'] == true)
-          {
-        if(ids.length>1)
-        {
-        let result = ids.slice(0, -1).join('');
-        console.log(result)
-        this.add.text(width/2, 50, '漢字構成要素:'+result, {
-            fontSize: '24px',
-            color: '#ffffff',
-            backgroundColor: '#000000',
-            }).setOrigin(0.5).setPadding(4);
-            buttonEnabled["sharpenTop"] = false
-          }else if(ids.length<1){
-           return
-          }}else if(buttonEnabled['sharpenButtom'] == false)
-           { 
-             return
-           }
-           //this.scene.restart()
-    });
-      //完成をクリックしたらMainSceneに遷移
-      button4.on('pointerdown', () => {
-        buttonEnabled['sharpenTop'] = true
-        buttonEnabled['sharpenButtom'] = true
-        this.scene.start('ending', { timelineID: 'start' });
-    });
-  }}
+      .setOrigin(0.5)
+      .setPadding(4);
+
+    // =============================
+    // ボタンの定義
+    // =============================
+    // "上から磨く"ボタン作成
+    const buttonTop = this.add
+      .text(width / 2 + 300, height / 2 + 130, "上から磨く", {
+        fontSize: "24px",
+        color: "#ffffff",
+        backgroundColor: "#000000",
+      })
+      .setOrigin(0.5)
+      .setPadding(4)
+      .on("pointerdown", () => {
+        this.manager.sharpenTop();
+        this.scene.restart();
+      });
+
+    // "復元する"ボタン作成
+    const buttonRestore = this.add
+      .text(width / 2 + 300, height / 2 + 180, "復元する", {
+        fontSize: "24px",
+        color: "#ffffff",
+        backgroundColor: "#000000",
+      })
+      .setOrigin(0.5)
+      .setPadding(4)
+      .on("pointerdown", () => {
+        this.manager.restore();
+        this.scene.restart();
+      });
+
+    // "下から磨く"ボタン作成
+    const buttonBottom = this.add
+      .text(width / 2 + 300, height / 2 + 230, "下から磨く", {
+        fontSize: "24px",
+        color: "#ffffff",
+        backgroundColor: "#000000",
+      })
+      .setOrigin(0.5)
+      .setPadding(4)
+      .on("pointerdown", () => {
+        this.manager.sharpenBottom();
+        this.scene.restart();
+      });
+
+    // "完了"ボタン作成
+    const buttonComplete = this.add
+      .text(width / 2 + 300, height / 2 + 280, "完成", {
+        fontSize: "24px",
+        color: "#ffffff",
+        backgroundColor: "#000000",
+      })
+      .setOrigin(0.5)
+      .setPadding(4)
+      .on("pointerdown", () => {
+        const { kanji, kanjiElements, score } = this.manager.complete();
+        this.scene.start("ending", {
+          kanji: kanji,
+          ids: kanjiElements.join(""),
+          score: score,
+        });
+      });
+
+    // =============================
+    // ボタンの有効・無効化
+    // =============================
+    if (opState in [OperationState.INIT]) {
+      console.log(opState in [OperationState.INIT]);
+      for (const button of [buttonTop, buttonBottom, buttonComplete]) {
+        console.log("init button: ", button);
+        button.setInteractive({
+          useHandCursor: true,
+        });
+      }
+    }
+    if (opState in [OperationState.TOP]) {
+      console.log(opState in [OperationState.TOP]);
+      for (const button of [buttonTop, buttonRestore]) {
+        console.log("top button: ", button);
+        button.setInteractive({
+          useHandCursor: true,
+        });
+      }
+    }
+    if (opState in [OperationState.BOTTOM]) {
+      for (const button of [buttonRestore, buttonBottom]) {
+        console.log("bottom button: ", button);
+        button.setInteractive({
+          useHandCursor: true,
+        });
+      }
+    }
+  }
+}

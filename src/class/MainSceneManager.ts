@@ -1,51 +1,86 @@
-enum OperationState {
+export enum OperationState {
   INIT,
   TOP,
   BOTTOM,
 }
 
 export class MainSceneManager {
-  kanjiElements: string;
-  originalElements: string;
-  originalKanji: string;
-  operationState: OperationState;
+  private static instance: MainSceneManager;
+  private kanjiElements: string[];
+  private originalElements: string[];
+  private originalKanji: string;
+  private operationState: OperationState;
 
   constructor() {
-    this.kanjiElements = "⿱田";
-    this.originalElements = "⿱田力";
-    this.originalKanji = "力";
+    this.kanjiElements = ["⿱", "田"];
+    this.originalElements = ["⿱", "田", "力"];
+    this.originalKanji = "男";
     this.operationState = OperationState.INIT;
   }
 
-  private setKanjiElements = (newElements: string): void => {
+  public static getInstance = (): MainSceneManager => {
+    if (!this.instance) {
+      this.instance = new MainSceneManager();
+    }
+    return this.instance;
+  };
+
+  public getKanji = (): string => {
+    return this.originalKanji;
+  };
+
+  public getKanjiElements = (): string[] => {
+    // FIXME: Unicodeで表示できない文字を星に置換
+    return this.kanjiElements;
+  };
+
+  public getOriginalElements = (): string[] => {
+    // FIXME: Unicodeで表示できない文字を星に置換
+    return this.originalElements;
+  };
+
+  public getOperationState = (): OperationState => {
+    return this.operationState;
+  };
+
+  private setKanjiElements = (newElements: string[]): void => {
     this.kanjiElements = newElements;
   };
 
   public sharpenTop(): void {
     // 文字数のバリデーション
-    // 上から磨く処理
-    // 結果をkanjiElementsにセット
-    // ステートの更新
+    // FIXME: 正しい要件を満たすように要修正
+    if (this.kanjiElements.length <= 1) return;
+    // "上から磨く"処理
+    this.setKanjiElements(this.kanjiElements.slice(1));
+    // 操作ステートの更新
     this.operationState = OperationState.TOP;
   }
 
   public restore(): void {
     // 辞書から新たな漢字構成要素と漢字を取得してセット
-    // kanjiElementsを新たな漢字構成要素にセット
+    this.setKanjiElements(this.originalElements); // for development
+    this.originalKanji = "女"; // for development
     // operationStateをINITに戻す
     this.operationState = OperationState.INIT;
   }
 
   public sharpenBottom(): void {
     // 文字数のバリデーション
+    // FIXME: 正しい要件を満たすように要修正
+    if (this.kanjiElements.length <= 1) return;
     // 下から磨く処理
-    // 結果をkanjiElementsにセット
-    // ステートの更新
+    this.setKanjiElements(this.kanjiElements.slice(0, -1));
+    // 操作ステートの更新
     this.operationState = OperationState.BOTTOM;
   }
 
-  public complete(): void {
-    // もしoriginalKanjiとkanjiElementsが一致していたらエンディングシーンに遷移
-    // スコアを計算して諸々の情報と共にエンディングシーンに渡す
+  public complete(): { kanji: string; kanjiElements: string[]; score: number } {
+    // スコアを計算して諸々の情報と共に返す
+    return {
+      kanji: this.getKanji(),
+      kanjiElements: this.getKanjiElements(),
+      score: this.getKanjiElements().length * 100,
+    };
   }
 }

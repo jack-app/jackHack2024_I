@@ -11,7 +11,10 @@ export class MainScene extends Phaser.Scene {
   preload() {
     // ロゴ画像だけは最初から表示したいので予めロード
     // Phaser3のロゴをlabs.phaser.ioから取得しているので、もし公開する際はこの部分は消してください
-    this.load.image("logo", "assets/phaser3-logo.png");
+    this.load.image("buttonTop","assets/button_uekara.png")
+    this.load.image("buttonRestore","assets/button_hukugen.png")
+    this.load.image("buttonBottom","assets/button_shitakara.png")
+    this.load.image("buttonComplete","assets/button_kansei.png")
   }
 
   create() {
@@ -61,55 +64,38 @@ export class MainScene extends Phaser.Scene {
     // =============================
     // "上から磨く"ボタン作成
     const buttonTop = this.add
-      .text(width / 2 + 300, height / 2 + 130, "上から磨く", {
-        fontSize: "24px",
-        color: "#ffffff",
-        backgroundColor: "#000000",
-      })
+      .image(width / 2 + 300, height / 2 + 130, "buttonTop")
       .setOrigin(0.5)
-      .setPadding(4)
       .on("pointerdown", () => {
         this.manager.sharpenTop();
         this.scene.restart();
       });
+    buttonTop.setDisplaySize(200, 40);
 
     // "復元する"ボタン作成
     const buttonRestore = this.add
-      .text(width / 2 + 300, height / 2 + 180, "復元する", {
-        fontSize: "24px",
-        color: "#ffffff",
-        backgroundColor: "#000000",
-      })
+      .image(width / 2 + 300, height / 2 + 180, "buttonRestore")
       .setOrigin(0.5)
-      .setPadding(4)
       .on("pointerdown", () => {
         this.manager.restore();
         this.scene.restart();
       });
+    buttonRestore.setDisplaySize(200, 40);
 
     // "下から磨く"ボタン作成
     const buttonBottom = this.add
-      .text(width / 2 + 300, height / 2 + 230, "下から磨く", {
-        fontSize: "24px",
-        color: "#ffffff",
-        backgroundColor: "#000000",
-      })
+      .image(width / 2 + 300, height / 2 + 230, "buttonBottom")
       .setOrigin(0.5)
-      .setPadding(4)
       .on("pointerdown", () => {
         this.manager.sharpenBottom();
         this.scene.restart();
       });
+    buttonBottom.setDisplaySize(200, 40);
 
     // "完了"ボタン作成
     const buttonComplete = this.add
-      .text(width / 2 + 300, height / 2 + 280, "完成", {
-        fontSize: "24px",
-        color: "#ffffff",
-        backgroundColor: "#000000",
-      })
+      .image(width / 2 + 300, height / 2 + 280, "buttonComplete")
       .setOrigin(0.5)
-      .setPadding(4)
       .on("pointerdown", () => {
         const { kanji, kanjiElements, score } = this.manager.complete();
         this.scene.start("ending", {
@@ -118,6 +104,7 @@ export class MainScene extends Phaser.Scene {
           score: score,
         });
       });
+    buttonComplete.setDisplaySize(200, 40);
 
     // =============================
     // ボタンの有効・無効化
@@ -126,7 +113,8 @@ export class MainScene extends Phaser.Scene {
       buttonTop.setInteractive({
         useHandCursor: true,
       });
-      buttonRestore.setFill("#888888");
+      buttonRestore.setAlpha(0.5);
+
       buttonBottom.setInteractive({
         useHandCursor: true,
       });
@@ -141,18 +129,18 @@ export class MainScene extends Phaser.Scene {
       buttonRestore.setInteractive({
         useHandCursor: true,
       });
-      buttonBottom.setFill("#888888");
-      buttonComplete.setFill("#888888");
+      buttonBottom.setAlpha(0.5);
+      buttonComplete.setAlpha(0.5);
     }
     if (opState == OperationState.BOTTOM) {
-      buttonTop.setFill("#888888");
+      buttonTop.setAlpha(0.5);
       buttonRestore.setInteractive({
         useHandCursor: true,
       });
       buttonBottom.setInteractive({
         useHandCursor: true,
       });
-      buttonComplete.setFill("#888888");
+      buttonComplete.setAlpha(0.5);
     }
   }
 }

@@ -53,7 +53,7 @@ export class EndingScene extends Phaser.Scene {
     this.add
       .text(width / 2, height / 2 - 190, kanji, {
         fontSize: 100,
-        fontFamily: "NotoSansCJKjp",
+        fontFamily: "simsun",
       })
       .setOrigin(0.5);
 
@@ -61,7 +61,7 @@ export class EndingScene extends Phaser.Scene {
     this.add
       .text(width / 2, height / 2 - 90, ids, {
         fontSize: 45,
-        fontFamily: "meiryo UI",
+        fontFamily: "simsun",
       })
       .setOrigin(0.5);
 
